@@ -171,6 +171,20 @@
     border-radius: 10px; color: var(--amber); font-size: 13px;
   }
   footer { margin-top: 24px; color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+  .tabs {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0;
+    border-bottom: 1px solid var(--line); padding-bottom: 0;
+  }
+  .tab {
+    font: inherit; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    background: transparent; color: var(--muted); border: 0; cursor: pointer;
+    padding: 12px 18px; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--blue); }
+  .tab:hover { color: var(--blue-2); }
+  .tab:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  .tab-panel { margin-top: 24px; }
+  .tab-panel[hidden] { display: none; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 </style>
 </head>
@@ -192,6 +206,27 @@
     </div>
   </header>
 
+  <nav class="tabs" role="tablist" aria-label="Secciones">
+    <button class="tab" role="tab" type="button" id="tabbtn-propiedades" aria-controls="tab-propiedades" aria-selected="true" data-tab="propiedades">Mis propiedades</button>
+    <button class="tab" role="tab" type="button" id="tabbtn-busquedas" aria-controls="tab-busquedas" aria-selected="false" tabindex="-1" data-tab="busquedas">Mis búsquedas</button>
+    <button class="tab" role="tab" type="button" id="tabbtn-futuros" aria-controls="tab-futuros" aria-selected="false" tabindex="-1" data-tab="futuros">FUTUROS</button>
+  </nav>
+
+  <div class="tab-panel" role="tabpanel" id="tab-propiedades" aria-labelledby="tabbtn-propiedades">
+    <article class="card">
+      <h2>Mis propiedades</h2>
+      <ul class="feed" id="propiedades"></ul>
+    </article>
+  </div>
+
+  <div class="tab-panel" role="tabpanel" id="tab-busquedas" aria-labelledby="tabbtn-busquedas" hidden>
+    <article class="card">
+      <h2>Mis búsquedas</h2>
+      <ul class="feed" id="busquedas"></ul>
+    </article>
+  </div>
+
+  <div class="tab-panel" role="tabpanel" id="tab-futuros" aria-labelledby="tabbtn-futuros" hidden>
   <!-- Saldo + indicadores -->
   <section class="grid-top" aria-label="Resumen">
     <article class="card balance" aria-labelledby="saldo-title">
@@ -254,19 +289,6 @@
     </article>
   </section>
 
-  <!-- Mis propiedades y búsquedas -->
-  <section class="section two" id="propiedades-busquedas">
-    <article class="card">
-      <h2>Mis propiedades</h2>
-      <ul class="feed" id="propiedades"></ul>
-    </article>
-
-    <article class="card">
-      <h2>Mis búsquedas</h2>
-      <ul class="feed" id="busquedas"></ul>
-    </article>
-  </section>
-
   <!-- Niveles -->
   <section class="section" id="niveles">
     <div class="eyebrow" style="margin-bottom:16px">Catálogo · Niveles</div>
@@ -275,6 +297,8 @@
       El nivel se calcula sobre los Futuros acreditados en los últimos 12 meses. Canjear no reduce el nivel.
     </p>
   </section>
+
+  </div>
 
   <div class="notice">
     Datos ficticios de demostración. Las reglas, premios y valores son ilustrativos y están pendientes de validación legal y económica: no deben activarse en producción.
@@ -493,6 +517,27 @@ function renderPropiedadesBusquedas() {
 
 render();
 renderPropiedadesBusquedas();
+
+/* ---------- Pestañas ---------- */
+
+const tabs = [...document.querySelectorAll('.tab')];
+function activarTab(nombre) {
+  tabs.forEach((t) => {
+    const activa = t.dataset.tab === nombre;
+    t.setAttribute('aria-selected', String(activa));
+    t.tabIndex = activa ? 0 : -1;
+    document.getElementById('tab-' + t.dataset.tab).hidden = !activa;
+  });
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => activarTab(t.dataset.tab));
+  t.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const siguiente = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+    siguiente.focus();
+    activarTab(siguiente.dataset.tab);
+  });
+});
 </script>
 </body>
 </html>
