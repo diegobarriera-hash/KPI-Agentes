@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FUTUROS · Mis Futuros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0d14;
+    --card: #111723;
+    --card-2: #0d1320;
+    --line: #1c3553;
+    --line-soft: #172638;
+    --blue: #0a7cff;
+    --blue-2: #5aa9ff;
+    --amber: #f5a524;
+    --text: #f2f5fa;
+    --muted: #8b97a8;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 48px; }
+
+  .eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--blue-2); letter-spacing: .25em; text-transform: uppercase;
+    font-size: 12px; font-weight: 500;
+  }
+  .eyebrow::before { content: ""; width: 42px; height: 1px; background: var(--blue); }
+
+  header.top {
+    display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .brand { font-weight: 800; font-size: 22px; letter-spacing: .02em; }
+  .brand span { color: var(--blue-2); }
+  .user { display: flex; align-items: center; gap: 12px; }
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center; font-weight: 700;
+    background: #0b1e36; border: 1px solid var(--blue); color: var(--blue-2);
+  }
+  .user small { display: block; color: var(--muted); font-size: 12px; }
+  .pill {
+    display: inline-block; padding: 4px 12px; border-radius: 999px;
+    border: 1px solid var(--amber); color: var(--amber);
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  }
+
+  .grid-top {
+    display: grid; gap: 16px;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 2fr);
+    margin-top: 8px;
+  }
+  @media (max-width: 860px) { .grid-top { grid-template-columns: minmax(0, 1fr); } }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .card h2 {
+    margin: 0 0 16px; font-size: 13px; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--blue-2);
+  }
+
+  .balance { box-shadow: 0 0 40px rgba(10,124,255,.12); }
+  .balance .label {
+    font-size: 12px; font-weight: 700; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--blue-2);
+  }
+  .balance .amount {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    margin: 8px 0 4px;
+  }
+  .balance .amount strong { font-size: clamp(48px, 8vw, 72px); font-weight: 800; line-height: 1; }
+  .balance .amount em { font-style: normal; font-size: 22px; color: var(--blue-2); }
+  .muted { color: var(--muted); }
+  .progress {
+    height: 8px; border-radius: 999px; background: #1a2232; overflow: hidden; margin: 22px 0 8px;
+  }
+  .progress > div {
+    height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-2));
+    transition: width .6s ease;
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  .btn {
+    flex: 1 1 200px; text-align: center; cursor: pointer;
+    padding: 14px 18px; border-radius: 10px; font: inherit; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .04em; font-size: 13px;
+    text-decoration: none; border: 1px solid var(--blue); color: var(--blue-2); background: transparent;
+  }
+  .btn.primary { background: var(--blue); color: #fff; box-shadow: 0 0 24px rgba(10,124,255,.35); }
+  .btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+  .stats {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .stat { padding: 18px; }
+  .stat .k {
+    font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--blue-2); min-height: 2.6em;
+  }
+  .stat .v { font-size: 34px; font-weight: 700; margin: 6px 0 2px; }
+  .stat .d { font-size: 13px; color: var(--muted); }
+
+  .section { margin-top: 32px; }
+  .two { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  .two > .card { min-width: 0; }
+  #billetera { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+  @media (max-width: 860px) { .two, #billetera { grid-template-columns: minmax(0, 1fr); } }
+
+  ul.feed { list-style: none; margin: 0; padding: 0; }
+  ul.feed li {
+    display: flex; justify-content: space-between; gap: 16px;
+    padding: 12px 0; border-bottom: 1px solid var(--line-soft);
+  }
+  ul.feed li:last-child { border-bottom: 0; }
+  .credit { color: var(--blue-2); font-weight: 600; white-space: nowrap; }
+  .debit { color: var(--amber); font-weight: 600; white-space: nowrap; }
+  .pend { color: var(--muted); font-weight: 600; white-space: nowrap; }
+
+  .rows { display: grid; gap: 10px; }
+  .row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); }
+  .row:last-child { border-bottom: 0; }
+  .num { font-variant-numeric: tabular-nums; color: var(--blue-2); }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
+  th { color: var(--blue-2); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; }
+  td.r, th.r { text-align: right; }
+  td.wrap { white-space: normal; }
+
+  .state {
+    display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px;
+    border: 1px solid var(--line); color: var(--muted);
+  }
+  .state.s-disp, .state.s-ok { border-color: var(--blue); color: var(--blue-2); }
+  .state.s-amber { border-color: var(--amber); color: var(--amber); }
+
+  .levels { display: grid; gap: 14px; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  @media (max-width: 960px) { .levels { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .level { padding: 18px; }
+  .level.current { border-color: var(--blue); box-shadow: 0 0 28px rgba(10,124,255,.18); }
+  .level.legend { border-color: var(--amber); }
+  .level h3 { margin: 0; font-size: 16px; letter-spacing: .14em; }
+  .level .range { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+  .level .prize { border-top: 1px solid var(--line-soft); padding: 10px 0; }
+  .level .prize b { color: var(--blue-2); font-weight: 600; display: block; font-size: 14px; }
+  .level .prize span { font-size: 13px; color: var(--muted); }
+
+  .notice {
+    margin-top: 32px; padding: 14px 18px; border: 1px solid var(--amber);
+    border-radius: 10px; color: var(--amber); font-size: 13px;
+  }
+  footer { margin-top: 24px; color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <div class="brand">FUTUROS<span>.</span></div>
+      <div class="eyebrow" style="margin-top:10px">Mis Futuros · Dashboard del usuario</div>
+    </div>
+    <div class="user">
+      <div class="avatar" aria-hidden="true">MR</div>
+      <div>
+        <strong>Mariana Ruiz</strong>
+        <small>Agente inmobiliario</small>
+      </div>
+      <span class="pill">Demostración</span>
+    </div>
+  </header>
+
+  <!-- Saldo + indicadores -->
+  <section class="grid-top" aria-label="Resumen">
+    <article class="card balance" aria-labelledby="saldo-title">
+      <h2 id="saldo-title" class="label">Saldo disponible</h2>
+      <div class="amount">
+        <strong id="saldo">—</strong><em>FUTUROS</em>
+      </div>
+      <div id="pendientes" class="muted">—</div>
+      <div class="progress" role="progressbar" aria-label="Avance al próximo premio" aria-valuemin="0" aria-valuemax="100" id="progress-bar">
+        <div id="progress" style="width:0%"></div>
+      </div>
+      <div id="faltan" class="muted" style="font-size:14px">—</div>
+      <div class="actions">
+        <a class="btn primary" href="#referir">Referir una oportunidad</a>
+        <a class="btn" href="#niveles">Explorar premios</a>
+      </div>
+    </article>
+
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <!-- Actividad reciente -->
+  <section class="section two">
+    <article class="card">
+      <h2>Actividad reciente</h2>
+      <ul class="feed" id="feed"></ul>
+    </article>
+
+    <article class="card" id="referidos">
+      <h2>Mis referidos · estados</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Referido</th><th>Tipo</th><th>Fecha</th><th>Estado</th></tr></thead>
+          <tbody id="referidos-body"></tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <!-- Billetera -->
+  <section class="section two" id="billetera">
+    <article class="card">
+      <h2>Saldos y totales</h2>
+      <div class="rows" id="totales"></div>
+      <p class="muted" style="font-size:13px;margin:16px 0 0">
+        <strong style="color:var(--text)">Estados:</strong> pendientes, disponibles, canjeados.
+        El saldo se calcula a partir del libro de movimientos; no se edita.
+      </p>
+    </article>
+
+    <article class="card">
+      <h2>Libro de movimientos</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Fecha</th><th>Movimiento</th><th>Regla</th><th>Estado</th><th class="r">Futuros</th></tr></thead>
+          <tbody id="ledger-body"></tbody>
+        </table>
+      </div>
+      <p class="muted" style="font-size:13px;margin:12px 0 0">Cada movimiento tiene identificador único, fecha, regla aplicada y origen. Los ajustes generan movimientos compensatorios.</p>
+    </article>
+  </section>
+
+  <!-- Niveles -->
+  <section class="section" id="niveles">
+    <div class="eyebrow" style="margin-bottom:16px">Catálogo · Niveles</div>
+    <div class="levels" id="levels"></div>
+    <p class="muted" style="font-size:13px;margin-top:14px">
+      El nivel se calcula sobre los Futuros acreditados en los últimos 12 meses. Canjear no reduce el nivel.
+    </p>
+  </section>
+
+  <div class="notice">
+    Datos ficticios de demostración. Las reglas, premios y valores son ilustrativos y están pendientes de validación legal y económica: no deben activarse en producción.
+  </div>
+
+  <footer>FUTUROS · Prototipo de producto · Sin integraciones reales ni cobros</footer>
+</div>
+
+<script>
+/* ---------- Datos de demostración ---------- */
+
+// Fecha de referencia fija para que la demo sea reproducible.
+const FECHA_REF = '2026-11-06';
+const PROXIMO_PREMIO_EN = 1500;
+
+// Libro de movimientos: créditos positivos, débitos negativos.
+// estado: 'disponible' | 'canjeado' (cuentan para el saldo) · 'pendiente' (no cuenta).
+const LEDGER = [
+  { id: 'MV-0001', fecha: '2025-10-02', concepto: 'Hito económico · Inmobiliaria aliada', regla: 'HITO-ALIADA',    estado: 'disponible', monto:  1300 },
+  { id: 'MV-0002', fecha: '2026-01-15', concepto: 'Activación de agente',                 regla: 'ACTIVACION',     estado: 'disponible', monto:   150 },
+  { id: 'MV-0003', fecha: '2026-02-10', concepto: 'Honorarios · administración de alquiler', regla: 'ALQUILER',    estado: 'disponible', monto:   300 },
+  { id: 'MV-0004', fecha: '2026-03-22', concepto: 'Canje · Cena para dos',                regla: 'CANJE',          estado: 'canjeado',   monto:  -900 },
+  { id: 'MV-0005', fecha: '2026-04-03', concepto: 'Honorarios · operación de propietario', regla: 'OP-PROPIETARIO', estado: 'disponible', monto:   450 },
+  { id: 'MV-0006', fecha: '2026-05-10', concepto: 'Canje · Cine para dos',                regla: 'CANJE',          estado: 'canjeado',   monto:  -500 },
+  { id: 'MV-0007', fecha: '2026-06-18', concepto: 'Honorarios · profesional habilitado',  regla: 'PROF-HABILITADO', estado: 'disponible', monto:   200 },
+  { id: 'MV-0008', fecha: '2026-08-12', concepto: 'Operación concretada · RF-2029',       regla: 'OP-CONCRETADA',  estado: 'disponible', monto:   200 },
+  { id: 'MV-0009', fecha: '2026-09-15', concepto: 'Canje · Kit ejecutivo',                regla: 'CANJE',          estado: 'canjeado',   monto:  -250 },
+  { id: 'MV-0010', fecha: '2026-10-20', concepto: 'Operación concretada · RF-2033',       regla: 'OP-CONCRETADA',  estado: 'disponible', monto:   300 },
+  { id: 'MV-0011', fecha: '2026-10-30', concepto: 'Operación en acreditación · RF-2044',  regla: 'OP-CONCRETADA',  estado: 'pendiente',  monto:   350 },
+];
+
+// Referidos del año. estado: 1 Recibido · 2 En validación · 3 Validado · 4 En gestión
+// 5 Operación concretada · 6 Pendiente de acreditación · 7 Futuros acreditados · 8 Rechazado · 9 Cancelado
+const ESTADOS = {
+  1: 'Recibido', 2: 'En validación', 3: 'Validado', 4: 'En gestión', 5: 'Operación concretada',
+  6: 'Pendiente de acreditación', 7: 'Futuros acreditados', 8: 'Rechazado', 9: 'Cancelado',
+};
+const REFERIDOS = [
+  { id: 'RF-2046', tipo: 'Comprador potencial',            fecha: '2026-11-03', estado: 1 },
+  { id: 'RF-2044', tipo: 'Comprador potencial',            fecha: '2026-10-12', estado: 6 },
+  { id: 'RF-2041', tipo: 'Propietario que quiere vender',  fecha: '2026-10-28', estado: 4 },
+  { id: 'RF-2038', tipo: 'Profesional interesado',         fecha: '2026-10-02', estado: 2 },
+  { id: 'RF-2036', tipo: 'Propietario que alquila',        fecha: '2026-09-22', estado: 3 },
+  { id: 'RF-2033', tipo: 'Propietario que quiere vender',  fecha: '2026-10-14', estado: 5 },
+  { id: 'RF-2031', tipo: 'Inmobiliaria interesada',        fecha: '2026-10-05', estado: 4 },
+  { id: 'RF-2030', tipo: 'Comprador potencial',            fecha: '2026-09-08', estado: 3 },
+  { id: 'RF-2029', tipo: 'Propietario que quiere vender',  fecha: '2026-08-02', estado: 7 },
+  { id: 'RF-2026', tipo: 'Comprador potencial',            fecha: '2026-08-19', estado: 8 },
+  { id: 'RF-2024', tipo: 'Propietario que alquila',        fecha: '2026-07-30', estado: 4 },
+  { id: 'RF-2019', tipo: 'Profesional interesado',         fecha: '2026-03-03', estado: 9 },
+];
+
+// Niveles (Futuros acreditados en 12 meses). Premios ilustrativos.
+const NIVELES = [
+  { nombre: 'START',  min: 0,     max: 499,      premios: [['Botella térmica', 150], ['Kit ejecutivo', 250]] },
+  { nombre: 'PLUS',   min: 500,   max: 1499,     premios: [['Cine para dos', 500], ['Cena para dos', 900]] },
+  { nombre: 'PRO',    min: 1500,  max: 3999,     premios: [['Auriculares inalámbricos', 1800], ['Experiencia de bienestar', 2500]] },
+  { nombre: 'ELITE',  min: 4000,  max: 9999,     premios: [['Smartwatch premium', 4500], ['Escapada de fin de semana', 7000]] },
+  { nombre: 'LEGEND', min: 10000, max: Infinity, premios: [['Tablet premium', 10000], ['Viaje o experiencia exclusiva', 20000]] },
+];
+
+/* ---------- Cálculos (siempre derivados del libro) ---------- */
+
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = (n) => Math.round(n).toLocaleString('es-AR');
+const fmtSigned = (n) => (n > 0 ? '+' : n < 0 ? '−' : '') + fmt(Math.abs(n));
+const fechaCorta = (iso) => { const [y, m, d] = iso.split('-'); return `${d}/${m}`; };
+const fechaLarga = (iso) => { const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}`; };
+
+function calcularSaldos(ledger, fechaRef) {
+  const limite12m = new Date(fechaRef + 'T00:00:00');
+  limite12m.setFullYear(limite12m.getFullYear() - 1);
+  const corte = limite12m.toISOString().slice(0, 10);
+
+  const efectivos = ledger.filter((m) => m.estado !== 'pendiente');
+  const disponible = efectivos.reduce((a, m) => a + m.monto, 0);
+  const pendiente = ledger.filter((m) => m.estado === 'pendiente').reduce((a, m) => a + m.monto, 0);
+  const historico = efectivos.filter((m) => m.monto > 0).reduce((a, m) => a + m.monto, 0);
+  const canjeado = -efectivos.filter((m) => m.monto < 0).reduce((a, m) => a + m.monto, 0);
+  const acumulado12m = efectivos
+    .filter((m) => m.monto > 0 && m.fecha >= corte)
+    .reduce((a, m) => a + m.monto, 0);
+  const canjes = ledger.filter((m) => m.monto < 0 && m.estado === 'canjeado').length;
+  return { disponible, pendiente, historico, canjeado, acumulado12m, canjes };
+}
+
+function calcularReferidos(refs) {
+  const en = (lista) => refs.filter((r) => lista.includes(r.estado)).length;
+  return {
+    enviados: refs.length,
+    validados: en([3, 4, 5, 6, 7]),
+    enGestion: en([4]),
+    concretados: en([5, 7]),
+  };
+}
+
+function nivelPara(acumulado) {
+  return NIVELES.find((n) => acumulado >= n.min && acumulado <= n.max) || NIVELES[0];
+}
+
+function badgeEstado(estado) {
+  const clase = estado === 5 || estado === 7 ? 's-ok' : estado === 6 ? 's-amber' : estado === 3 || estado === 4 ? 's-disp' : '';
+  return `<span class="state ${clase}">${esc(ESTADOS[estado])}</span>`;
+}
+
+/* ---------- Render ---------- */
+
+function render() {
+  const s = calcularSaldos(LEDGER, FECHA_REF);
+  const r = calcularReferidos(REFERIDOS);
+  const nivel = nivelPara(s.acumulado12m);
+  const faltan = Math.max(0, PROXIMO_PREMIO_EN - s.disponible);
+  const pct = Math.min(100, Math.round((s.disponible / PROXIMO_PREMIO_EN) * 100));
+
+  // Saldo
+  document.getElementById('saldo').textContent = fmt(s.disponible);
+  document.getElementById('pendientes').textContent = `${fmt(s.pendiente)} Futuros pendientes`;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('progress-bar').setAttribute('aria-valuenow', pct);
+  document.getElementById('faltan').textContent = faltan > 0
+    ? `Te faltan ${fmt(faltan)} Futuros para tu próximo premio.`
+    : '¡Ya llegaste al próximo premio!';
+
+  // Indicadores
+  const stats = [
+    { k: 'Referidos enviados', v: r.enviados, d: 'Este año' },
+    { k: 'Validados', v: r.validados, d: 'Revisados por el equipo' },
+    { k: 'En gestión', v: r.enGestion, d: 'Oportunidades activas' },
+    { k: 'Negocios concretados', v: r.concretados, d: 'Operaciones cerradas' },
+    { k: 'Premios canjeados', v: s.canjes, d: 'Entregado' },
+    { k: 'Futuros acumulados', v: fmt(s.acumulado12m), d: 'Últimos 12 meses' },
+  ];
+  document.getElementById('stats').innerHTML = stats.map((x) => `
+    <div class="card stat">
+      <div class="k">${esc(x.k)}</div>
+      <div class="v">${esc(x.v)}</div>
+      <div class="d">${esc(x.d)}</div>
+    </div>`).join('');
+
+  // Actividad reciente (últimos 5 movimientos)
+  const recientes = [...LEDGER].sort((a, b) => b.fecha.localeCompare(a.fecha)).slice(0, 5);
+  document.getElementById('feed').innerHTML = recientes.map((m) => {
+    const clase = m.estado === 'pendiente' ? 'pend' : m.monto > 0 ? 'credit' : 'debit';
+    const etiqueta = m.estado === 'pendiente' ? `${fmtSigned(m.monto)} · pendiente` : `${fmtSigned(m.monto)} Futuros`;
+    return `<li><span>${esc(m.concepto)} · ${fechaCorta(m.fecha)}</span><span class="${clase}">${esc(etiqueta)}</span></li>`;
+  }).join('');
+
+  // Referidos
+  document.getElementById('referidos-body').innerHTML = [...REFERIDOS]
+    .sort((a, b) => b.fecha.localeCompare(a.fecha))
+    .map((x) => `<tr><td>${esc(x.id)}</td><td class="wrap">${esc(x.tipo)}</td><td>${fechaCorta(x.fecha)}</td><td>${badgeEstado(x.estado)}</td></tr>`)
+    .join('');
+
+  // Saldos y totales
+  const filas = [
+    ['Saldo disponible', s.disponible],
+    ['Saldo pendiente', s.pendiente],
+    ['Total histórico ganado', s.historico],
+    ['Total canjeado', s.canjeado],
+  ];
+  document.getElementById('totales').innerHTML = filas.map(([k, v]) =>
+    `<div class="row"><span>${esc(k)}</span><span class="num">${fmt(v)}</span></div>`).join('');
+
+  // Libro de movimientos (más reciente primero)
+  const etiquetaEstado = { disponible: ['s-disp', 'Disponible'], canjeado: ['', 'Canjeado'], pendiente: ['s-amber', 'Pendiente'] };
+  document.getElementById('ledger-body').innerHTML = [...LEDGER]
+    .sort((a, b) => b.fecha.localeCompare(a.fecha) || b.id.localeCompare(a.id))
+    .map((m) => {
+      const [clase, texto] = etiquetaEstado[m.estado];
+      const cls = m.monto > 0 ? 'credit' : 'debit';
+      return `<tr>
+        <td>${esc(m.id)}</td><td>${fechaLarga(m.fecha)}</td>
+        <td class="wrap">${esc(m.concepto)}</td><td class="muted">${esc(m.regla)}</td>
+        <td><span class="state ${clase}">${texto}</span></td>
+        <td class="r ${m.estado === 'pendiente' ? 'pend' : cls}">${fmtSigned(m.monto)}</td>
+      </tr>`;
+    }).join('');
+
+  // Niveles
+  document.getElementById('levels').innerHTML = NIVELES.map((n) => {
+    const actual = n === nivel ? ' current' : '';
+    const legend = n.nombre === 'LEGEND' ? ' legend' : '';
+    const rango = n.max === Infinity ? `${fmt(n.min)} o más` : `${fmt(n.min)} – ${fmt(n.max)}`;
+    const premios = n.premios.map(([nom, costo]) =>
+      `<div class="prize"><b>${esc(nom)}</b><span>${fmt(costo)} Futuros</span></div>`).join('');
+    return `<article class="card level${actual}${legend}">
+      <h3 style="${n.nombre === 'LEGEND' ? 'color:var(--amber)' : ''}">${esc(n.nombre)}${n === nivel ? ' · tu nivel' : ''}</h3>
+      <div class="range">${esc(rango)} Futuros</div>
+      ${premios}
+    </article>`;
+  }).join('');
+}
+
+render();
+</script>
+</body>
+</html>
