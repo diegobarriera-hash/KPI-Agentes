@@ -254,6 +254,19 @@
     </article>
   </section>
 
+  <!-- Mis propiedades y búsquedas -->
+  <section class="section two" id="propiedades-busquedas">
+    <article class="card">
+      <h2>Mis propiedades</h2>
+      <ul class="feed" id="propiedades"></ul>
+    </article>
+
+    <article class="card">
+      <h2>Mis búsquedas</h2>
+      <ul class="feed" id="busquedas"></ul>
+    </article>
+  </section>
+
   <!-- Niveles -->
   <section class="section" id="niveles">
     <div class="eyebrow" style="margin-bottom:16px">Catálogo · Niveles</div>
@@ -455,7 +468,31 @@ function render() {
   }).join('');
 }
 
+/* ---------- Mis propiedades y búsquedas (datos de demostración) ---------- */
+
+const PROPIEDADES = [
+  { direccion: 'Av. Libertador 1200 · 3 amb', operacion: 'Venta', precio: 185000, estado: 'Activa' },
+  { direccion: 'Juncal 2450 · 2 amb',          operacion: 'Alquiler', precio: 900, estado: 'En negociación' },
+];
+
+const BUSQUEDAS = [
+  { tipo: 'Comprador', zona: 'Palermo · 2 a 3 amb', presupuesto: 'hasta USD 220.000', estado: 'Activa' },
+  { tipo: 'Inquilino', zona: 'Belgrano · 2 amb',    presupuesto: 'hasta USD 900/mes', estado: 'Pausada' },
+];
+
+function renderPropiedadesBusquedas() {
+  document.getElementById('propiedades').innerHTML = PROPIEDADES.map((p) => {
+    const precio = p.operacion === 'Alquiler' ? `USD ${fmt(p.precio)}/mes` : `USD ${fmt(p.precio)}`;
+    return `<li><span>${esc(p.direccion)} · ${esc(p.operacion)}</span><span class="num">${esc(precio)} · ${esc(p.estado)}</span></li>`;
+  }).join('');
+
+  document.getElementById('busquedas').innerHTML = BUSQUEDAS.map((b) =>
+    `<li><span>${esc(b.tipo)} · ${esc(b.zona)}</span><span class="num">${esc(b.presupuesto)} · ${esc(b.estado)}</span></li>`
+  ).join('');
+}
+
 render();
+renderPropiedadesBusquedas();
 </script>
 </body>
 </html>
